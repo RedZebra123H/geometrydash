@@ -11,9 +11,8 @@ URL="https://github.com/RedZebra123H/geometrydash/releases/download/gd/Geometry-
 if [ -d "$APP_PATH" ]; then
 CURRENT_VERSION="Unknown"
 
-```
 if [ -f "$APP_PATH/Contents/Info.plist" ]; then
-    CURRENT_VERSION=$(defaults read "$APP_PATH/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "Unknown")
+    CURRENT_VERSION=$(defaults read "$APP_PATH/Contents/Info" CFBundleShortVersionString 2>/dev/null || defaults read "$APP_PATH/Contents/Info" CFBundleVersion 2>/dev/null || echo "Unknown")
 fi
 
 BUTTON=$(osascript -e "button returned of (display dialog \"Geometry Dash is already installed.\n\nCurrent version: $CURRENT_VERSION\n\nDo you want to update it?\" buttons {\"No\",\"Yes\"} default button \"Yes\")")
@@ -25,7 +24,6 @@ fi
 
 echo "Removing existing $APP_NAME..."
 rm -rf "$APP_PATH"
-```
 
 fi
 
