@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -e
 
 APP_NAME="Geometry Dash.app"
@@ -15,14 +16,8 @@ if [ -f "$APP_PATH/Contents/Info.plist" ]; then
     CURRENT_VERSION=$(defaults read "$APP_PATH/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "Unknown")
 fi
 
-BUTTON=$(osascript -e 'button returned of (display dialog "Geometry Dash is already installed.
-```
+BUTTON=$(osascript -e "button returned of (display dialog \"Geometry Dash is already installed.\n\nCurrent version: $CURRENT_VERSION\n\nDo you want to update it?\" buttons {\"No\",\"Yes\"} default button \"Yes\")")
 
-Current version: '"$CURRENT_VERSION"'
-
-Do you want to update it?" buttons {"No","Yes"} default button "Yes")')
-
-```
 if [ "$BUTTON" = "No" ]; then
     echo "Update cancelled."
     exit 0
@@ -57,9 +52,7 @@ xattr -r -c "$APP_PATH"
 
 echo "Installation complete."
 
-BUTTON=$(osascript -e 'button returned of (display dialog "Geometry Dash has been installed.
-
-Do you want to open it now?" buttons {"No","Yes"} default button "Yes")')
+BUTTON=$(osascript -e 'button returned of (display dialog "Geometry Dash has been installed.\n\nDo you want to open it now?" buttons {"No","Yes"} default button "Yes")')
 
 if [ "$BUTTON" = "Yes" ]; then
 open "$APP_PATH"
