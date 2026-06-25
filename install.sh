@@ -8,13 +8,30 @@ ZIP_PATH="$DOWNLOADS_DIR/Geometry-Dash.zip"
 URL="https://github.com/RedZebra123H/geometrydash/releases/download/gd/Geometry-Dash.zip"
 
 if [ -d "$APP_PATH" ]; then
-  BUTTON=$(osascript -e 'button returned of (display dialog "'"$APP_NAME"' is already installed. Do you want to update it?" buttons {"No","Yes"} default button "Yes")')
-  if [ "$BUTTON" = "No" ]; then
-    echo "Update cancelled. Exiting."
+CURRENT_VERSION="Unknown"
+
+```
+if [ -f "$APP_PATH/Contents/Info.plist" ]; then
+    CURRENT_VERSION=$(defaults read "$APP_PATH/Contents/Info" CFBundleShortVersionString 2>/dev/null || echo "Unknown")
+fi
+
+BUTTON=$(osascript -e 'button returned of (display dialog "Geometry Dash is already installed.
+```
+
+Current version: '"$CURRENT_VERSION"'
+
+Do you want to update it?" buttons {"No","Yes"} default button "Yes")')
+
+```
+if [ "$BUTTON" = "No" ]; then
+    echo "Update cancelled."
     exit 0
-  fi
-  echo "Removing existing $APP_NAME..."
-  rm -rf "$APP_PATH"
+fi
+
+echo "Removing existing $APP_NAME..."
+rm -rf "$APP_PATH"
+```
+
 fi
 
 echo "Downloading Geometry Dash..."
@@ -25,8 +42,8 @@ cd "$DOWNLOADS_DIR"
 unzip -o "$ZIP_PATH"
 
 if [ ! -d "$DOWNLOADS_DIR/$APP_NAME" ]; then
-  echo "$APP_NAME not found after unzipping."
-  exit 1
+echo "$APP_NAME not found after unzipping."
+exit 1
 fi
 
 echo "Installing to Applications..."
@@ -40,7 +57,10 @@ xattr -r -c "$APP_PATH"
 
 echo "Installation complete."
 
-BUTTON=$(osascript -e 'button returned of (display dialog "'"$APP_NAME"' has been installed.\n\nDo you want to open it now?" buttons {"No","Yes"} default button "Yes")')
+BUTTON=$(osascript -e 'button returned of (display dialog "Geometry Dash has been installed.
+
+Do you want to open it now?" buttons {"No","Yes"} default button "Yes")')
+
 if [ "$BUTTON" = "Yes" ]; then
-  open "$APP_PATH"
+open "$APP_PATH"
 fi
